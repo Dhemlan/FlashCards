@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Flash Cards</string>
+    <string name="import_questions">Import Questions</string>
+    <string name="no_questions">No more questions</string>
 </resources>
