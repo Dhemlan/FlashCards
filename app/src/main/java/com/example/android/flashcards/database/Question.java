@@ -15,11 +15,11 @@ public class Question {
     private int answeredCount;
 
     @Ignore
-    public Question (String question, String answer, int category, int answeredCount){
+    public Question (String question, String answer, int category){
         this.question = question;
         this.answer = answer;
         this.category = category;
-        this.answeredCount = answeredCount;
+        this.answeredCount = 0;
     }
     public Question (int id, String question, String answer, int category, int answeredCount){
         this.id = id;

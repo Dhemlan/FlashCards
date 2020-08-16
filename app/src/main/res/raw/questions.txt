@@ -1,0 +1,15 @@
+Describe the 3 asymptotic notation forms
+Big theta - bounds growth rate above and below. Big O - bounds growth rate above. Big Omega - bounds growth rate below.
+1
+Define stability with regard to sorting algorithms
+Equal sorted elements retain the same relative position as the input
+2
+What makes a sorting algorithm adaptive?
+Changes in the time complexity based on the order of input elements (e.g. bubble sort is faster with an already sorted input)
+12
+How does selection sort work? Is it stable? Is it adaptive?
+Scans all elements to find the minimum, then swaps that element into the appropriate position. Repeat. It is unstable and non-adaptive.
+2
+What are the average, best, worst and space complexities of selection sort?
+Time complexities are all O(n^2). Space = O(1)
+12

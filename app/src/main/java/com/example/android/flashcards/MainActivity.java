@@ -19,6 +19,9 @@ import com.example.android.flashcards.database.Question;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+import static com.example.android.flashcards.Utils.addFromFileToDb;
+
+
 
 public class MainActivity extends AppCompatActivity {
     private GestureDetector mDetector;
@@ -37,13 +40,20 @@ public class MainActivity extends AppCompatActivity {
         mAnswerTextView = (TextView) findViewById(R.id.answer_tv);
 
         mDb = AppDatabase.getInstance(getApplicationContext());
-        mQuestions.addAll(mDb.questionDao().loadAllQuestions());
-        nextQuestion();
+
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mQuestions.addAll(mDb.questionDao().loadAllQuestions());
+                nextQuestion();
+            }
+        });
 
 
         mQuestionTextView.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 mAnswerTextView.setVisibility(View.VISIBLE);
+                mQuestionTextView.setTextSize(16);
                 return true;
             }
         });
@@ -57,8 +67,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         mAnswerTextView.setOnTouchListener(touchListener);
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -69,11 +82,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.import_questions){
+            addFromFileToDb(getApplicationContext(), mDb);
+        }
+        return true;
     }
 
     class FlingListener extends GestureDetector.SimpleOnGestureListener {
-
         @Override
         public boolean onDown(MotionEvent event) {
             Log.d("TAG","onDown: ");
@@ -85,13 +100,20 @@ public class MainActivity extends AppCompatActivity {
             if (event1.getX() < event2.getX()) {
                 Toast.makeText(getApplicationContext(), "Flung right!", Toast.LENGTH_SHORT).show();
                 mCurQuestion.incrementAnswerCount();
-                mDb.questionDao().updateQuestion(mCurQuestion);
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        mDb.questionDao().updateQuestion(mCurQuestion);
+                    }
+                });
+
             }
             else {
                 Toast.makeText(getApplicationContext(), "Flung left!", Toast.LENGTH_SHORT).show();
                 mQuestions.add(mCurQuestion);
             }
             mAnswerTextView.setVisibility(View.GONE);
+            mQuestionTextView.setTextSize(32);
             nextQuestion();
             return true;
         }
@@ -106,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setQuestionToDisplay(Question q) {
-        mQuestionTextView.setText("Q: " + q.getQuestion() + "(Answered " + q.getAnsweredCount() + " times)");
-        mAnswerTextView.setText("A: " + q.getAnswer());
+        mQuestionTextView.setText(q.getQuestion() + "(Answered " + q.getAnsweredCount() + " times)");
+        mAnswerTextView.setText(q.getAnswer());
     }
 
     public void noMoreQuestions(){

@@ -13,6 +13,7 @@
         android:gravity="center"
         android:text="This is a test question"
         android:layout_weight="1"
+        android:textSize="32sp"
         />
 
     <TextView
@@ -24,6 +25,7 @@
         android:gravity="center"
         android:text="And here's the answer"
         android:visibility="gone"
+        android:textSize="32sp"
         />
     <TextView
         android:id="@+id/no_questions_tv"
