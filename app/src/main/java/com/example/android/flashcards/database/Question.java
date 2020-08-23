@@ -4,28 +4,31 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+import java.util.List;
+
 @Entity
-public class Question {
+public class Question implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String question;
     private String answer;
-    private int category;
+    @Ignore
+    private List<Integer> categories;
     private int answeredCount;
 
     @Ignore
-    public Question (String question, String answer, int category){
+    public Question (String question, String answer, List<Integer> categories){
         this.question = question;
         this.answer = answer;
-        this.category = category;
+        this.categories = categories;
         this.answeredCount = 0;
     }
-    public Question (int id, String question, String answer, int category, int answeredCount){
+    public Question (int id, String question, String answer, int answeredCount){
         this.id = id;
         this.question = question;
         this.answer = answer;
-        this.category = category;
         this.answeredCount = answeredCount;
     }
 
@@ -45,8 +48,8 @@ public class Question {
         return answer;
     }
 
-    public int getCategory() {
-        return category;
+    public List<Integer> getCategories() {
+        return categories;
     }
 
     public int getAnsweredCount() {
@@ -54,3 +57,5 @@ public class Question {
     }
 
 }
+
+

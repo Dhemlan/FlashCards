@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <CheckBoxPreference
+        android:key="@string/revision_cb_key"
+        android:title="@string/revision_cb_title" />
+
+    <SeekBarPreference
+        android:title="@string/revision_sb_title"
+        android:key="@string/revision_sb_key"
+        android:defaultValue="@integer/default_revision_threshold"
+        app:showSeekBarValue="true"
+        android:summary="Number of correct answers before a question is moved to revision"
+        android:max="20"
+        />
+
+    <ListPreference
+        android:defaultValue="@string/category_all_value"
+        android:key="@string/category_lp_key"
+        android:entries="@array/category_option_labels"
+        android:entryValues="@array/category_option_values"
+        android:summary="%s"
+        android:title="@string/category_lp_title"
+        />
+
+
+</PreferenceScreen>

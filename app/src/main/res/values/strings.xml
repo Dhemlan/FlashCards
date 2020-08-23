@@ -1,5 +1,40 @@
 <resources>
     <string name="app_name">Flash Cards</string>
+    <!-- General strings -->
+    <string name="question_label">Question</string>
+    <string name="answer_label">Answer</string>
+    <string name="categories_label">Categories</string>
+
+    <!-- Menu labels -->
     <string name="import_questions">Import Questions</string>
+    <string name="change_pool_label">Change Question Pool</string>
+    <string name="edit_question_label">Edit Current Question</string>
+    <string name="delete_db_label">Delete DB</string>
+
+    <string name="load_more_questions">Load more questions</string>
     <string name="no_questions">No more questions</string>
+
+    <!-- Misc keys -->
+    <string name="q_cross_activity_key" translatable="false">q_id</string>
+
+    <!-- Add/Edit questions -->
+    <string name="add_q_title">Add Question</string>
+    <string name="edit_q_title">Edit Question</string>
+
+    <!-- Shared Prefs-->
+    <string name="revision_cb_key" translatable="false">revision_cb</string>
+    <string name="revision_cb_title">Revision Mode</string>
+
+    <string name="revision_sb_title">Revision Threshold</string>
+    <string name="revision_sb_key" translatable="false">revision_sb</string>
+
+    <string name="category_lp_key" translatable="false">category_lp</string>
+    <string name="category_lp_title">Question Category</string>
+    <string name="category_all_label">All Topics</string>
+    <string name="category_big_o_label">Big O</string>
+    <string name="category_sorting_label">Sorting Algorithms</string>
+    <string name="category_all_value">0</string>
+    <string name="category_big_o_value">1</string>
+    <string name="category_sorting_value">2</string>
+
 </resources>

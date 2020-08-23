@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="category_option_labels">
+        <item>@string/category_all_label</item>
+        <item>@string/category_big_o_label</item>
+        <item>@string/category_sorting_label</item>
+    </array>
+
+    <array name="category_option_values">
+        <item>@string/category_all_value</item>
+        <item>@string/category_big_o_value</item>
+        <item>@string/category_sorting_value</item>
+    </array>
+</resources>

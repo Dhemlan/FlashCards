@@ -6,10 +6,31 @@ Equal sorted elements retain the same relative position as the input
 2
 What makes a sorting algorithm adaptive?
 Changes in the time complexity based on the order of input elements (e.g. bubble sort is faster with an already sorted input)
-12
+1 2
 How does selection sort work? Is it stable? Is it adaptive?
 Scans all elements to find the minimum, then swaps that element into the appropriate position. Repeat. It is unstable and non-adaptive.
 2
+How does bubble sort work? Is it stable? Is it adaptive?
+Multiple passes are made from the end, with any element less than an adjacent element swapped. Multiple elements may be swapped and single element may be swapped multiple times in a single pass. Algorithm terminates once a pass completes with no swaps
+2
+How does insertion sort work? Is it stable? Is it adaptive?
+The low end is the working sorted section. Each element is compared starting at the end of the sorted section then looping backwards, with greater elements shuffled up until the appropriate place is found
+2
 What are the average, best, worst and space complexities of selection sort?
-Time complexities are all O(n^2). Space = O(1)
-12
+Worst O(n^2), Average Theta((n^2), Best Omega(n^2), Space = O(1)
+1 2
+What are the average, best, worst and space complexities of bubble sort?
+Worst O(n^2), Average Theta((n^2), Best Omega(n), Space = O(1)
+1 2
+What are the average, best, worst and space complexities of insertion sort?
+Worst O(n^2), Average Theta((n^2), Best Omega(n), Space = O(1)
+1 2
+Match the pairs - {Theta, O, Omega} {best, worst, average}
+Theta -> Average, O -> Worst, Omega -> Best
+1
+When might bubble sort be non-adaptive?
+If the algorithm doesn't terminate on a full pass without any swaps
+2
+When might bubble sort be unstable?
+If the low value is compared to the high value with <= (rather than <)
+2
