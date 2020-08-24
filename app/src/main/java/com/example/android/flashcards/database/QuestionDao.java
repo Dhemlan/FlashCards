@@ -25,6 +25,9 @@ public interface QuestionDao {
     @Query("SELECT question, answer, answeredCount, id FROM question JOIN category ON id=qid WHERE answeredCount > :threshold AND categoryKey= :cat GROUP BY id ")
     List<Question> loadSpecificRevisionCategory(int cat, int threshold);
 
+    @Query("SELECT categoryKey FROM category WHERE qId= :qId")
+    List<Integer> loadQuestionsCategories(long qId);
+
     @Insert
     long insertQuestion(Question question);
 
@@ -36,4 +39,7 @@ public interface QuestionDao {
 
     @Delete
     void deleteQuestion(Question question);
+
+    @Delete
+    void deleteQuestionCategory(QuestionCategory qCategory);
 }

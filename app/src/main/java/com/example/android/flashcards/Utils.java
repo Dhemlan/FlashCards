@@ -2,6 +2,8 @@ package com.example.android.flashcards;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.example.android.flashcards.database.AppDatabase;
@@ -15,6 +17,15 @@ import java.util.List;
 public abstract class Utils {
 
     static List<Question> questionsToAdd = new ArrayList<>();
+
+    public static List<Integer> getSelectedCategoryCheckBoxes(View view) {
+        List<Integer> checkedBoxes = new ArrayList<Integer>();
+        for (int i = 1; i < CATEGORY_CHECKBOX_IDS.length; i++) {
+            CheckBox cur = (CheckBox) view.findViewById(CATEGORY_CHECKBOX_IDS[i]);
+            if (cur.isChecked()) checkedBoxes.add(i);
+        }
+        return checkedBoxes;
+    }
 
     public static final void bulkAddQuestions(final AppDatabase db){
         populateQuestions();
@@ -75,8 +86,11 @@ public abstract class Utils {
     public static final int BIG_O_CATEGORY = 1;
     public static final int SORTING_CATEGORY = 2;
     public static final int DATABASES_CATEGORY = 3;
-    public static final int DESIGN_CATEGORY = 4;
-    public static final int JAVA_CATEGORY = 5;
+    public static final int JAVA_CATEGORY = 4;
+
+    // Add to array below, strings, add/edit xml, shared prefs key/value strings
+
+    public static final int[] CATEGORY_CHECKBOX_IDS = {0, R.id.categories_cb1, R.id.categories_cb2, R.id.categories_cb3, R.id.categories_cb4};
 
 
 

@@ -32,11 +32,17 @@
 
     <string name="category_lp_key" translatable="false">category_lp</string>
     <string name="category_lp_title">Question Category</string>
+
     <string name="category_all_label">All Topics</string>
     <string name="category_big_o_label">Big O</string>
     <string name="category_sorting_label">Sorting Algorithms</string>
+    <string name="category_databases_label">Databases</string>
+    <string name="category_java_label">Java</string>
+
     <string name="category_all_value">0</string>
     <string name="category_big_o_value">1</string>
     <string name="category_sorting_value">2</string>
+    <string name="category_databases_value">3</string>
+    <string name="category_java_value">4</string>
 
 </resources>

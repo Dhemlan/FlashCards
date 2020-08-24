@@ -4,11 +4,15 @@
         <item>@string/category_all_label</item>
         <item>@string/category_big_o_label</item>
         <item>@string/category_sorting_label</item>
+        <item>@string/category_databases_label</item>
+        <item>@string/category_java_label</item>
     </array>
 
     <array name="category_option_values">
         <item>@string/category_all_value</item>
         <item>@string/category_big_o_value</item>
         <item>@string/category_sorting_value</item>
+        <item>@string/category_databases_value</item>
+        <item>@string/category_java_value</item>
     </array>
 </resources>

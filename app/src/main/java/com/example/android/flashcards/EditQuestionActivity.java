@@ -3,6 +3,7 @@ package com.example.android.flashcards;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,6 +12,10 @@ import android.widget.Toast;
 
 import com.example.android.flashcards.database.AppDatabase;
 import com.example.android.flashcards.database.Question;
+import com.example.android.flashcards.database.QuestionCategory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditQuestionActivity extends AppCompatActivity {
 
@@ -31,20 +36,47 @@ public class EditQuestionActivity extends AppCompatActivity {
 
         final Question q =  (Question) getIntent().getSerializableExtra(getString(R.string.q_cross_activity_key));
 
+        mQEditText.setText(q.getQuestion());
+        mAEditText.setText(q.getAnswer());
+
+        //MAIN THREAD QUERY
+        final List<Integer> categories = mDb.questionDao().loadQuestionsCategories(q.getId());
+        for (int cat : categories){
+            CheckBox selectedCb = (CheckBox) findViewById(Utils.CATEGORY_CHECKBOX_IDS[cat]);
+            selectedCb.setChecked(true);
+        }
+
         Button editButton = (Button) findViewById(R.id.edit_bt);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int answeredCount = mResetAnswerCountCheckBox.isChecked() ? 0 : q.getAnsweredCount();
-                Question editedQ = new Question(q.getId(),mQEditText.getText().toString(), mAEditText.getText().toString(), answeredCount);
+                int qId = q.getId();
+                Question editedQ = new Question(qId,mQEditText.getText().toString(), mAEditText.getText().toString(), answeredCount);
                 mDb.questionDao().updateQuestion(editedQ);
+
+                List<Integer> newCategories = new ArrayList<Integer>();
+                for(int i = 1; i < Utils.CATEGORY_CHECKBOX_IDS.length; i++){
+                    CheckBox cur = (CheckBox) findViewById(Utils.CATEGORY_CHECKBOX_IDS[i]);
+                    if (cur.isChecked()) newCategories.add(i);
+                }
+
+                List<Integer> toAdd = new ArrayList<Integer>(newCategories);
+                toAdd.removeAll(categories);
+                for (int cat : toAdd){
+                    mDb.questionDao().insertQuestionCategory(new QuestionCategory(qId, cat));
+                }
+
+                categories.removeAll(newCategories);
+                for(int cat : categories){
+                    mDb.questionDao().deleteQuestionCategory(new QuestionCategory(qId, cat));
+                }
+
                 Toast.makeText(EditQuestionActivity.this, "Question edited!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
 
-        mQEditText.setText(q.getQuestion());
-        mAEditText.setText(q.getAnswer());
 
     }
 }
