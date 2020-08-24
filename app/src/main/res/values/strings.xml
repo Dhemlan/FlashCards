@@ -5,21 +5,23 @@
     <string name="answer_label">Answer</string>
     <string name="categories_label">Categories</string>
 
+    <string name="load_more_questions">Load more questions</string>
+    <string name="no_questions">No more questions</string>
+
     <!-- Menu labels -->
     <string name="import_questions">Import Questions</string>
     <string name="change_pool_label">Change Question Pool</string>
+    <string name="add_question_label">Add Question</string>
     <string name="edit_question_label">Edit Current Question</string>
     <string name="delete_db_label">Delete DB</string>
 
-    <string name="load_more_questions">Load more questions</string>
-    <string name="no_questions">No more questions</string>
 
     <!-- Misc keys -->
     <string name="q_cross_activity_key" translatable="false">q_id</string>
 
     <!-- Add/Edit questions -->
-    <string name="add_q_title">Add Question</string>
-    <string name="edit_q_title">Edit Question</string>
+    <string name="edit_q_label">Edit Question</string>
+    <string name="revision_reset_label">Reset answer count</string>
 
     <!-- Shared Prefs-->
     <string name="revision_cb_key" translatable="false">revision_cb</string>

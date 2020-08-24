@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edit_q_sv">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,18 +13,18 @@
     tools:context=".EditQuestionActivity">
 
     <TextView
-        android:id="@+id/add_edit_title_tv"
+        android:id="@+id/add_edit_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/edit_q_title"
+        android:text="@string/edit_q_label"
         android:textSize="24dp"/>
 
     <TextView
-        android:id="@+id/question_label_tv"
+        android:id="@+id/question_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -28,19 +32,18 @@
         android:text="@string/question_label"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_edit_title_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/add_edit_tv" />
 
     <EditText
         android:id="@+id/edit_q_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-
-        app:layout_constraintTop_toBottomOf="@+id/question_label_tv"
+        app:layout_constraintTop_toBottomOf="@+id/question_tv"
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
-        android:id="@+id/answer_label_tv"
+        android:id="@+id/answer_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -55,28 +58,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/answer_label_tv"
+        app:layout_constraintTop_toBottomOf="@+id/answer_tv"
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
-        android:id="@+id/categories_label_tv"
+        android:id="@+id/revision_reset_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/categories_label"
+        android:text="@string/revision_reset_label"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_a_et" />
 
-    <Button
-        android:id="@+id/button"
+    <CheckBox
+        android:id="@+id/revision_reset_cb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/edit_q_title"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/revision_reset_tv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/revision_reset_tv"
+        app:layout_constraintTop_toTopOf="@+id/revision_reset_tv" />
+
+    <TextView
+        android:id="@+id/categories_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+
+        android:text="@string/categories_label"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/revision_reset_tv" />
+
+    <CheckBox
+        android:id="@+id/categories_cb1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/category_all_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05
+"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categories_tv" />
+
+    <Button
+        android:id="@+id/edit_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/edit_q_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/categories_cb1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

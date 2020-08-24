@@ -4,13 +4,13 @@
 
     <!-- View background color -->
     <solid
-        android:color="@color/colorPrimary" >
+        android:color="@color/colorAccent" >
     </solid>
 
     <!-- View border color and width -->
     <stroke
-        android:width="5dp"
-        android:color="@color/colorPrimaryDark" >
+        android:width="4dp"
+        android:color="@color/colorPrimary" >
     </stroke>
 
     <!-- The radius makes the corners rounded -->

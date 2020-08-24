@@ -33,7 +33,7 @@ public abstract class Utils {
 
     private static void populateQuestions(){
         questionsToAdd.add(new Question("Describe the 3 asymptotic notation forms",
-                "Big theta - bounds growth rate above and below.\n Big O - bounds growth rate above.\n Big Omega - bounds growth rate below.",
+                "Big theta - bounds growth rate above and below.\nBig O - bounds growth rate above.\nBig Omega - bounds growth rate below.",
                 Arrays.asList(1)));
         questionsToAdd.add(new Question("Define stability with regard to sorting algorithms", "Equal sorted elements retain the same relative position as the input\n",
                 Arrays.asList(2)));
@@ -57,7 +57,12 @@ public abstract class Utils {
                 Arrays.asList(2)));
         questionsToAdd.add(new Question("When might bubble sort be unstable?", "If the low value is compared to the high value with <= (rather than <)",
                 Arrays.asList(2)));
-
+        questionsToAdd.add(new Question("What are the 3 major constructs of a database", "Attributes, entities and relationships",
+                Arrays.asList(DATABASES_CATEGORY)));
+        questionsToAdd.add(new Question("Describe database key hierarchy", "A [super] key is an attribute group that is unique over an entity set\nA candidate key is a minimal key\nA primary key is a candidate key selected by the database designer",
+                Arrays.asList(DATABASES_CATEGORY)));
+        questionsToAdd.add(new Question("Describe this line of code:/n int x = a > b ? a : b", "The ? represents the conditional (a.k.a ternary) operator\nIt will return a or b depending on the value of the a > b boolean expression",
+                Arrays.asList(JAVA_CATEGORY)));
 
     }
 
@@ -66,9 +71,13 @@ public abstract class Utils {
                 Arrays.asList()));
         **/
 
-    public static final int CATEGORY_ALL = 0;
-    public static final int CATEGORY_BIG_O = 1;
-    public static final int CATEGORY_SORTING = 2;
+    public static final int All_CATEGORY = 0;
+    public static final int BIG_O_CATEGORY = 1;
+    public static final int SORTING_CATEGORY = 2;
+    public static final int DATABASES_CATEGORY = 3;
+    public static final int DESIGN_CATEGORY = 4;
+    public static final int JAVA_CATEGORY = 5;
+
 
 
 }

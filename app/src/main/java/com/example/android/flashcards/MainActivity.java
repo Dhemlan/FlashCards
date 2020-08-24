@@ -19,10 +19,8 @@ import androidx.preference.PreferenceManager;
 
 import com.example.android.flashcards.database.AppDatabase;
 import com.example.android.flashcards.database.Question;
-import com.example.android.flashcards.database.QuestionCategory;
 
 import java.util.ArrayDeque;
-import java.util.List;
 import java.util.Queue;
 
 
@@ -102,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ChangeQuestionPoolActivity.class);
             startActivity(intent);
         }
+        else if (item.getItemId() == R.id.menu_add_question){
+            Intent intent = new Intent(this, AddQuestionActivity.class);
+            startActivity(intent);
+        }
         else if (item.getItemId() == R.id.menu_edit_question){
             if (mCurQuestion != null) {
                 Intent intent = new Intent(this, EditQuestionActivity.class);
@@ -158,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
              mQuestions.addAll(mDb.questionDao().loadRevisionQuestions(revisionThreshold));
         }
         else{
-            if (category != Utils.CATEGORY_ALL) mQuestions.addAll(mDb.questionDao().loadSpecificCategory(category, revisionThreshold));
+            if (category != Utils.All_CATEGORY) mQuestions.addAll(mDb.questionDao().loadSpecificCategory(category, revisionThreshold));
             else mQuestions.addAll(mDb.questionDao().loadLearningQuestions(revisionThreshold));
         }
         loadQuestion();
