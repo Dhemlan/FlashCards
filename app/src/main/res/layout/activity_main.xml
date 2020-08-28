@@ -2,55 +2,61 @@
 
 <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:id="@+id/main_ll">
+
     <TextView
         android:id="@+id/question_tv"
+        style="@style/QADisplay"
+        android:gravity="center_vertical"
+        android:background="@drawable/secondary_tv_background"
+        android:text="test test\ntest text"
+        />
+    <TextView
+        android:id="@+id/mastery_pb_label"
         android:layout_width="match_parent"
-        android:paddingVertical="20dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
+        android:text="@string/question_mastery_label"
         android:gravity="center"
-        android:text="This is a test question"
-        android:layout_weight="1"
-        android:textSize="24sp"
-        android:background="@drawable/q_tv_background"
-        android:layout_margin="16dp"
-        android:padding="8dp"
+        android:paddingTop="12dp"
+        />
+    <ProgressBar
+        android:id="@+id/answered_count_pb"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="36dp"
+        android:paddingBottom="18dp"
         />
 
     <TextView
         android:id="@+id/answer_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="5"
-        android:gravity="center"
+        style="@style/QADisplay"
+        android:background="@drawable/primary_tv_background"
         android:visibility="gone"
-        android:textSize="24sp"
-        android:background="@drawable/a_tv_background"
-        android:layout_margin="16dp"
-        android:padding="8dp"
-        />
+        android:gravity="center_vertical"
+       />
+
     <TextView
         android:id="@+id/messages_tv"
+        style="@style/QADisplay"
+        android:background="@drawable/accent_tv_background"
         android:layout_width="match_parent"
-        android:paddingVertical="20dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
         android:gravity="center"
         android:text="@string/no_questions"
-        android:layout_weight="1"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/load_more_qs_bt"
-        android:text="@string/load_more_questions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="24dp"
         android:visibility="gone"
-        />
+        android:text="@string/load_more_questions" />
 </LinearLayout>

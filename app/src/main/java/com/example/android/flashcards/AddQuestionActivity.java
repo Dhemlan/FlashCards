@@ -36,16 +36,23 @@ public class AddQuestionActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Question qToAdd = new Question(mQEditText.getText().toString(), mAEditText.getText().toString(), Arrays.asList(1));
-                long qId = mDb.questionDao().insertQuestion(qToAdd);
-                List<Integer> newCategories = new ArrayList<Integer>();
+                final Question qToAdd = new Question(mQEditText.getText().toString(), mAEditText.getText().toString(), null);
+                final List<Integer> newCategories = new ArrayList<Integer>();
                 for(int i = 1; i < Utils.CATEGORY_CHECKBOX_IDS.length; i++){
                     CheckBox cur = (CheckBox) findViewById(Utils.CATEGORY_CHECKBOX_IDS[i]);
                     if (cur.isChecked()) newCategories.add(i);
                 }
-                for (int cat : newCategories){
-                    mDb.questionDao().insertQuestionCategory(new QuestionCategory(qId, cat));
-                }
+
+                AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        long qId = mDb.questionDao().insertQuestion(qToAdd);
+                        for (int cat : newCategories){
+                            mDb.questionDao().insertQuestionCategory(new QuestionCategory(qId, cat));
+                        }
+                    }
+                });
+
                 Toast.makeText(AddQuestionActivity.this, "Question added!", Toast.LENGTH_SHORT).show();
                 finish();
             }

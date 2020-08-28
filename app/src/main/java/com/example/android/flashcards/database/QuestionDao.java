@@ -16,13 +16,13 @@ public interface QuestionDao {
     @Query("SELECT * FROM question WHERE answeredCount < :threshold ORDER BY RANDOM()")
     List<Question> loadLearningQuestions(int threshold);
 
-    @Query("SELECT question, answer, answeredCount, id FROM question JOIN category ON id=qid WHERE answeredCount <= :threshold AND categoryKey= :cat GROUP BY id ")
+    @Query("SELECT question, answer, answeredCount, id FROM question JOIN category ON id=qid WHERE answeredCount < :threshold AND categoryKey= :cat GROUP BY id ")
     List<Question> loadSpecificCategory(int cat, int threshold);
 
     @Query("SELECT * from question WHERE answeredCount >= :threshold ORDER BY RANDOM()")
     List<Question> loadRevisionQuestions(int threshold);
 
-    @Query("SELECT question, answer, answeredCount, id FROM question JOIN category ON id=qid WHERE answeredCount > :threshold AND categoryKey= :cat GROUP BY id ")
+    @Query("SELECT question, answer, answeredCount, id FROM question JOIN category ON id=qid WHERE answeredCount >= :threshold AND categoryKey= :cat GROUP BY id ")
     List<Question> loadSpecificRevisionCategory(int cat, int threshold);
 
     @Query("SELECT categoryKey FROM category WHERE qId= :qId")

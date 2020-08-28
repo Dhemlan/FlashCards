@@ -11,7 +11,7 @@
         android:defaultValue="@integer/default_revision_threshold"
         app:showSeekBarValue="true"
         android:summary="Number of correct answers before a question is moved to revision"
-        android:max="20"
+        android:max="25"
         />
 
     <ListPreference

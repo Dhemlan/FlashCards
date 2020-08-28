@@ -5,8 +5,12 @@
     <string name="answer_label">Answer</string>
     <string name="categories_label">Categories</string>
 
-    <string name="load_more_questions">Load more questions</string>
+    <string name="text_big">20sp</string>
+
+
+    <string name="load_more_questions">Load more</string>
     <string name="no_questions">No more questions</string>
+    <string name="question_mastery_label">Question Mastery</string>
 
     <!-- Menu labels -->
     <string name="import_questions">Import Questions</string>

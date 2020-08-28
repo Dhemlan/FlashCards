@@ -10,11 +10,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.preference.PreferenceManager;
 
 import com.example.android.flashcards.database.AppDatabase;
@@ -36,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private Queue<Question> mQuestions;
     private Question mCurQuestion;
     private Button mMoreQuestionsButton;
+    private ProgressBar mAnsweredProgressBar;
+    private TextView mMasteryLabel;
 
     private static final int MIN_TEXT_SIZE = 12;
     private static final int MAX_TEXT_SIZE = 24;
@@ -49,14 +54,18 @@ public class MainActivity extends AppCompatActivity {
         mAnswerTextView = (TextView) findViewById(R.id.answer_tv);
         mMessageTextView = (TextView) findViewById(R.id.messages_tv);
         mMoreQuestionsButton = (Button) findViewById(R.id.load_more_qs_bt);
+        mAnsweredProgressBar = (ProgressBar) findViewById(R.id.answered_count_pb);
+        mMasteryLabel = findViewById(R.id.mastery_pb_label);
+
 
         mDb = AppDatabase.getInstance(getApplicationContext());
         fetchQuestions();
 
-        mQuestionTextView.setOnTouchListener(new View.OnTouchListener() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.main_ll);
+        layout.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 mAnswerTextView.setVisibility(View.VISIBLE);
-                mQuestionTextView.setTextSize(MIN_TEXT_SIZE);
+                //mQuestionTextView.setTextSize(MIN_TEXT_SIZE);
                 return true;
             }
         });
@@ -69,25 +78,19 @@ public class MainActivity extends AppCompatActivity {
         });
         
         mDetector = new GestureDetector(this, new FlingListener());
-        View.OnTouchListener touchListener = new View.OnTouchListener() {
+        View.OnTouchListener answerListener = new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return mDetector.onTouchEvent(event);
             }
         };
-        mAnswerTextView.setOnTouchListener(touchListener);
+        mAnswerTextView.setOnTouchListener(answerListener);
     }
 
     @Override
     protected void onResume() {
         fetchQuestions();
         super.onResume();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override
@@ -141,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Flung left!", Toast.LENGTH_SHORT).show();
             }
             mAnswerTextView.setVisibility(View.GONE);
-            mQuestionTextView.setTextSize(MAX_TEXT_SIZE);
             mQuestions.remove();
             loadQuestion();
             return true;
@@ -150,20 +152,32 @@ public class MainActivity extends AppCompatActivity {
 
     public void fetchQuestions(){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        boolean revisionMode = sharedPrefs.getBoolean(getString(R.string.revision_cb_key), false);
-        int category = Integer.parseInt(sharedPrefs.getString(getString(R.string.category_lp_key), "0"));
-        int revisionThreshold = sharedPrefs.getInt(getString(R.string.revision_sb_key), R.integer.default_revision_threshold);
+        final boolean revisionMode = sharedPrefs.getBoolean(getString(R.string.revision_cb_key), false);
+        final int category = Integer.parseInt(sharedPrefs.getString(getString(R.string.category_lp_key), "0"));
+        final int revisionThreshold = sharedPrefs.getInt(getString(R.string.revision_sb_key), R.integer.default_revision_threshold);
+        mAnsweredProgressBar.setMax(revisionThreshold);
 
         mQuestions = new ArrayDeque<>();
-        if (revisionMode) {
-            //if (category != Utils.CATEGORY_ALL) mQuestions.addAll(mDb.questionDao().loadSpecificCategory(category, revisionThreshold));
-             mQuestions.addAll(mDb.questionDao().loadRevisionQuestions(revisionThreshold));
-        }
-        else{
-            if (category != Utils.All_CATEGORY) mQuestions.addAll(mDb.questionDao().loadSpecificCategory(category, revisionThreshold));
-            else mQuestions.addAll(mDb.questionDao().loadLearningQuestions(revisionThreshold));
-        }
-        loadQuestion();
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (revisionMode) {
+                    if (category != Utils.All_CATEGORY) mQuestions.addAll(mDb.questionDao().loadSpecificRevisionCategory(category, revisionThreshold));
+                    else mQuestions.addAll(mDb.questionDao().loadRevisionQuestions(revisionThreshold));
+                }
+                else{
+                    if (category != Utils.All_CATEGORY) mQuestions.addAll(mDb.questionDao().loadSpecificCategory(category, revisionThreshold));
+                    else mQuestions.addAll(mDb.questionDao().loadLearningQuestions(revisionThreshold));
+                }
+                runOnUiThread(new Runnable(){
+                    @Override
+                    public void run(){
+                        loadQuestion();
+                    }
+                });
+            }
+        });
+
     }
 
     public void loadQuestion(){
@@ -171,19 +185,30 @@ public class MainActivity extends AppCompatActivity {
         if (mCurQuestion != null) {
             setQuestionToDisplay(mCurQuestion);
             mQuestionTextView.setVisibility(View.VISIBLE);
+            mAnsweredProgressBar.setVisibility(View.VISIBLE);
+            mMasteryLabel.setVisibility(View.VISIBLE);
             mMessageTextView.setVisibility(View.GONE);
             mMoreQuestionsButton.setVisibility(View.GONE);
         }
         else {
             mQuestionTextView.setVisibility(View.GONE);
             mAnswerTextView.setVisibility(View.GONE);
+            mAnsweredProgressBar.setVisibility(View.GONE);
+            mMasteryLabel.setVisibility(View.GONE);
             mMessageTextView.setVisibility(View.VISIBLE);
             mMoreQuestionsButton.setVisibility(View.VISIBLE);
         };
     }
 
     public void setQuestionToDisplay(Question q) {
-        mQuestionTextView.setText(q.getQuestion() + " (Answered " + q.getAnsweredCount() + " times)");
+        mQuestionTextView.setText(q.getQuestion());
         mAnswerTextView.setText(q.getAnswer());
+        mAnsweredProgressBar.setProgress(q.getAnsweredCount());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 }
