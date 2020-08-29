@@ -74,6 +74,16 @@ public abstract class Utils {
                 Arrays.asList(DATABASES_CATEGORY)));
         questionsToAdd.add(new Question("Describe this line of code:/n int x = a > b ? a : b", "The ? represents the conditional (a.k.a ternary) operator\nIt will return a or b depending on the value of the a > b boolean expression",
                 Arrays.asList(JAVA_CATEGORY)));
+        questionsToAdd.add(new Question("Compare the Entity Relationship (ER) and Relational Data models", "ER utilises diagrams to describe relationships between entities and the associated attributes of both\nThe relational data model creates a collection of inter-connected tables (relations)",
+                Arrays.asList(DATABASES_CATEGORY)));
+        questionsToAdd.add(new Question("Describe a relation schema. What is an tuple of a relation schema? An instance?", "A relation/table (denoted R,S,T...) has a name and a set of attributes (i.e the structure of the table)\nA tuple is a list of the related values for each attribute (i.e. an entry).\nAn instance is a set of tuples.",
+                Arrays.asList(DATABASES_CATEGORY)));
+        questionsToAdd.add(new Question("What are the 4 types of database integrity constraints?", "Domain (constraint on allowed attribute values)\nKey (uniqueness)\nEntity (no null attribute values)\nReferential (references between relations)",
+                Arrays.asList(DATABASES_CATEGORY)));
+        questionsToAdd.add(new Question("Describe a N:M mapping in a relational data model", "3 tables (2 entities + the relationship) with the relationship table containing foreign keys to the entity tables and any attributes of the relationship",
+                Arrays.asList(DATABASES_CATEGORY)));
+        questionsToAdd.add(new Question("Describe a 1:N/1:1 mapping in a relational data model", "2 tables with the relationship (foreign key + any attributes) incorporated into one of the entities" ,
+                Arrays.asList(DATABASES_CATEGORY)));
 
     }
 

@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.preference.PreferenceManager;
 
 import com.example.android.flashcards.database.AppDatabase;
@@ -30,7 +29,7 @@ import java.util.Queue;
 import static com.example.android.flashcards.Utils.bulkAddQuestions;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private GestureDetector mDetector;
     private TextView mAnswerTextView;
     private TextView mQuestionTextView;
@@ -41,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private Button mMoreQuestionsButton;
     private ProgressBar mAnsweredProgressBar;
     private TextView mMasteryLabel;
+    private LinearLayout mLayout;
+    private View.OnTouchListener mQuestionListener;
 
     private static final int MIN_TEXT_SIZE = 12;
     private static final int MAX_TEXT_SIZE = 24;
@@ -56,23 +57,24 @@ public class MainActivity extends AppCompatActivity {
         mMoreQuestionsButton = (Button) findViewById(R.id.load_more_qs_bt);
         mAnsweredProgressBar = (ProgressBar) findViewById(R.id.answered_count_pb);
         mMasteryLabel = findViewById(R.id.mastery_pb_label);
-
-
+        mLayout = (LinearLayout) findViewById(R.id.main_ll);
         mDb = AppDatabase.getInstance(getApplicationContext());
-        fetchQuestions();
 
-        LinearLayout layout = (LinearLayout) findViewById(R.id.main_ll);
-        layout.setOnTouchListener(new View.OnTouchListener() {
+        fetchQuestions();
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+
+        mQuestionListener = new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 mAnswerTextView.setVisibility(View.VISIBLE);
-                //mQuestionTextView.setTextSize(MIN_TEXT_SIZE);
                 return true;
             }
-        });
+        };
+        mLayout.setOnTouchListener(mQuestionListener);
 
         mMoreQuestionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mLayout.setOnTouchListener(mQuestionListener);
                 fetchQuestions();
             }
         });
@@ -88,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        fetchQuestions();
-        super.onResume();
+    protected void onDestroy() {
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
     }
 
     @Override
@@ -116,10 +118,20 @@ public class MainActivity extends AppCompatActivity {
             else Toast.makeText(this, "Load a question first!", Toast.LENGTH_SHORT).show();
         }
         else if (item.getItemId() == R.id.menu_clear_db){
-            mDb.clearAllTables();
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    mDb.clearAllTables();
+                }
+            });
             loadQuestion();
         }
         return true;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        fetchQuestions();
     }
 
     class FlingListener extends GestureDetector.SimpleOnGestureListener {
@@ -130,13 +142,14 @@ public class MainActivity extends AppCompatActivity {
         }
         @Override
         public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX, float velocityY) {
+            final Question curQ = mCurQuestion;
             if (event1.getX() < event2.getX()) {
                 Toast.makeText(getApplicationContext(), "Flung right!", Toast.LENGTH_SHORT).show();
-                mCurQuestion.incrementAnswerCount();
+                curQ.incrementAnswerCount();
                 AppExecutors.getInstance().diskIO().execute(new Runnable() {
                     @Override
                     public void run() {
-                        mDb.questionDao().updateQuestion(mCurQuestion);
+                        mDb.questionDao().updateQuestion(curQ);
                     }
                 });
             }
@@ -172,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable(){
                     @Override
                     public void run(){
+                        mLayout.setOnTouchListener(mQuestionListener);
                         loadQuestion();
                     }
                 });
@@ -189,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
             mMasteryLabel.setVisibility(View.VISIBLE);
             mMessageTextView.setVisibility(View.GONE);
             mMoreQuestionsButton.setVisibility(View.GONE);
+
         }
         else {
             mQuestionTextView.setVisibility(View.GONE);
@@ -197,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
             mMasteryLabel.setVisibility(View.GONE);
             mMessageTextView.setVisibility(View.VISIBLE);
             mMoreQuestionsButton.setVisibility(View.VISIBLE);
+            mLayout.setOnTouchListener(null);
         };
     }
 
